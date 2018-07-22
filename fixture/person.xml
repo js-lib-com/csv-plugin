@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<csv class="js.csv.CsvReaderTest$Person" separator="comma" null-value="null" debug="true">
+	<value name="Name" property="name" />
+	<value name="Age" property="age" />
+</csv>
