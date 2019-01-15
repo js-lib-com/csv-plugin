@@ -1,11 +1,15 @@
 package js.csv;
 
+import java.io.InputStream;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import js.lang.Config;
+import js.lang.ConfigBuilder;
+import js.lang.ConfigException;
 import js.util.Classes;
 
 public final class CsvDescriptor {
@@ -36,6 +40,9 @@ public final class CsvDescriptor {
 	/** Optional value used when object property is null, default to empty string. */
 	private final String nullValue;
 
+	/** Optional characters set used to encode CSV content, default to UTF-8. */
+	private Charset charset;
+	
 	private final boolean debug;
 
 	/** CSV value descriptors related to CSV columns. */
@@ -71,11 +78,25 @@ public final class CsvDescriptor {
 		}
 
 		this.nullValue = config.getAttribute("null-value", CsvDescriptor.DEFAULT_NULL_VALUE);
+		this.charset = Charset.forName(config.getAttribute("charset", "UTF-8"));
 		this.debug = config.getAttribute("debug", boolean.class, false);
 
 		this.valueDescriptors = new ArrayList<ValueDescriptor>();
 		for (Config childConfig : config.getChildren()) {
 			this.valueDescriptors.add(new ValueDescriptor(childConfig));
+		}
+	}
+
+	public CsvDescriptor(InputStream configStream) throws CsvException {
+		this(config(configStream));
+	}
+
+	private static Config config(InputStream configStream) throws CsvException {
+		ConfigBuilder builder = new ConfigBuilder(configStream);
+		try {
+			return builder.build();
+		} catch (ConfigException e) {
+			throw new CsvException("Invalid configuration source.");
 		}
 	}
 
@@ -89,6 +110,10 @@ public final class CsvDescriptor {
 
 	public String getNullValue() {
 		return nullValue;
+	}
+
+	public Charset getCharset() {
+		return charset;
 	}
 
 	public boolean isDebug() {

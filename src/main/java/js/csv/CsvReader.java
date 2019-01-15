@@ -41,7 +41,7 @@ public final class CsvReader<T> implements Iterator<T>, Iterable<T>, Closeable {
 	public CsvReader(CsvDescriptor descriptor, InputStream stream) throws IOException {
 		log.trace("CsvReaderImpl(CsvDescriptor, InputStream)");
 		type = (Class<T>) descriptor.getType();
-		reader = new BufferedReader(new InputStreamReader(stream, "UTF-8"));
+		reader = new BufferedReader(new InputStreamReader(stream, descriptor.getCharset()));
 
 		converter = ConverterRegistry.getConverter();
 		this.descriptor = descriptor;
