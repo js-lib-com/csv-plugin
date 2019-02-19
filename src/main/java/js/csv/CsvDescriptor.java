@@ -42,8 +42,10 @@ public final class CsvDescriptor {
 
 	/** Optional characters set used to encode CSV content, default to UTF-8. */
 	private Charset charset;
-	
+
 	private final boolean debug;
+
+	private final boolean hasHeader;
 
 	/** CSV value descriptors related to CSV columns. */
 	private final List<ValueDescriptor> valueDescriptors;
@@ -81,10 +83,16 @@ public final class CsvDescriptor {
 		this.charset = Charset.forName(config.getAttribute("charset", "UTF-8"));
 		this.debug = config.getAttribute("debug", boolean.class, false);
 
-		this.valueDescriptors = new ArrayList<ValueDescriptor>();
+		this.valueDescriptors = new ArrayList<>();
 		for (Config childConfig : config.getChildren()) {
 			this.valueDescriptors.add(new ValueDescriptor(childConfig));
 		}
+		if (this.valueDescriptors.isEmpty()) {
+			throw new CsvException("Invalid CSV configuration. Missing value descriptor(s).");
+		}
+
+		// named values mandates header
+		this.hasHeader = this.valueDescriptors.get(0).isNamedValue();
 	}
 
 	public CsvDescriptor(InputStream configStream) throws CsvException {
@@ -102,6 +110,10 @@ public final class CsvDescriptor {
 
 	public Class<?> getType() {
 		return type;
+	}
+
+	public boolean hasHeader() {
+		return hasHeader;
 	}
 
 	public char getSeparator() {

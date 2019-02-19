@@ -25,6 +25,8 @@ final class ValueDescriptor {
 	private static final Log log = LogFactory.getLog(ValueDescriptor.class);
 
 	private final String name;
+	/** Named value mandates header. */
+	private final boolean namedValue;
 	private final String property;
 	private final Format format;
 
@@ -32,10 +34,25 @@ final class ValueDescriptor {
 	 * Load values descriptor from configuration element.
 	 * 
 	 * @param element configuration element.
+	 * @throws CsvException
 	 */
-	public ValueDescriptor(Config element) {
-		this.name = element.getAttribute("name");
+	public ValueDescriptor(Config element) throws CsvException {
+		String name = element.getAttribute("name");
+		if (name == null) {
+			name = element.getAttribute("index");
+			if (name == null) {
+				throw new CsvException("Value descriptor should have either <index> or <name> attribute.");
+			}
+			this.namedValue = false;
+		} else {
+			this.namedValue = true;
+		}
+		this.name = name;
+
 		this.property = element.getAttribute("property");
+		if (this.property == null) {
+			throw new CsvException("Value descriptor should have <property> attribute.");
+		}
 
 		String className = element.getAttribute("format");
 		this.format = className != null ? createFormatter(className) : null;
@@ -43,6 +60,10 @@ final class ValueDescriptor {
 
 	public String getName() {
 		return name;
+	}
+
+	public boolean isNamedValue() {
+		return namedValue;
 	}
 
 	public String getProperty() {

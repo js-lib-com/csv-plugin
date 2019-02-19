@@ -53,7 +53,10 @@ public final class CsvReader<T> implements Iterator<T>, Iterable<T>, Closeable {
 		if (line.isEmpty()) {
 			throw new CsvException("Invalid CSV file. First line should be header but is empty.");
 		}
-		nextLine();
+
+		if (descriptor.hasHeader()) {
+			nextLine();
+		}
 	}
 
 	@Override
@@ -97,7 +100,7 @@ public final class CsvReader<T> implements Iterator<T>, Iterable<T>, Closeable {
 	}
 
 	public static List<String> parseLine(String line, char separator) {
-		List<String> values = new ArrayList<String>();
+		List<String> values = new ArrayList<>();
 		StringBuilder valueBuilder = new StringBuilder();
 
 		State state = State.VALUE_START;
@@ -118,7 +121,7 @@ public final class CsvReader<T> implements Iterator<T>, Iterable<T>, Closeable {
 				}
 
 			case READ_VALUE:
-				if (c != ',') {
+				if (c != separator) {
 					valueBuilder.append(c);
 				} else {
 					values.add(valueBuilder.toString());
@@ -128,7 +131,7 @@ public final class CsvReader<T> implements Iterator<T>, Iterable<T>, Closeable {
 				break;
 
 			case UNESCAPE_VALUE:
-				if (c == ',' && quotesIndex % 2 == 1) {
+				if (c == separator && quotesIndex % 2 == 1) {
 					values.add(valueBuilder.toString());
 					valueBuilder.setLength(0);
 					state = State.VALUE_START;

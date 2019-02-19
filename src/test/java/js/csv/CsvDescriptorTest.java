@@ -10,7 +10,7 @@ import org.junit.Test;
 public class CsvDescriptorTest {
 	@Test
 	public void constructor() throws ConfigException, CsvException {
-		ConfigBuilder builder = new ConfigBuilder("<csv class='js.csv.CsvDescriptorTest$Person'></csv>");
+		ConfigBuilder builder = new ConfigBuilder("<csv class='js.csv.CsvDescriptorTest$Person'><value name=\"NAME\" property=\"name\" /></csv>");
 		Config config = builder.build();
 		new CsvDescriptor(config);
 	}
