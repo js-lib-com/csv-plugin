@@ -99,7 +99,7 @@ public final class CsvReader<T> implements Iterator<T>, Iterable<T>, Closeable {
 		return instance;
 	}
 
-	public static List<String> parseLine(String line, char separator) {
+	static List<String> parseLine(String line, char separator) {
 		List<String> values = new ArrayList<>();
 		StringBuilder valueBuilder = new StringBuilder();
 

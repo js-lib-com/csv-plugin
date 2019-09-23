@@ -70,6 +70,22 @@ public class CsvReaderTest {
 		assertEquals(4, persons.get(5).age);
 	}
 
+	@Test
+	public void escapeNewLine() throws IOException {
+		CsvConfig config = Factory.getInstance(CsvConfig.class);
+		InputStream stream = new FileInputStream("fixture/escape-new-line.csv");
+		CsvReader<Person> reader = new CsvReader<>(config.getDescriptor(Person.class), stream);
+
+		List<Person> persons = new ArrayList<>();
+		for (Person person : reader) {
+			persons.add(person);
+		}
+		reader.close();
+
+		assertEquals(1, persons.size());
+		assertEquals("Iulian\r\nRotaru", persons.get(0).name);
+	}
+
 	// --------------------------------------------------------------------------------------------
 	// FIXTURE
 
