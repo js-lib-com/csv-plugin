@@ -8,17 +8,18 @@ import java.lang.reflect.Type;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.fileupload.FileItemIterator;
+import org.apache.commons.fileupload.FileItemStream;
+import org.apache.commons.fileupload.FileUploadException;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
+
 import js.core.Factory;
 import js.http.encoder.ArgumentsReader;
 import js.lang.IllegalArgumentException;
 import js.log.Log;
 import js.log.LogFactory;
+import js.util.Classes;
 import js.util.Files;
-
-import org.apache.commons.fileupload.FileItemIterator;
-import org.apache.commons.fileupload.FileItemStream;
-import org.apache.commons.fileupload.FileUploadException;
-import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
 /**
  * CSV reader argument transported as <code>multipart/form-data</code>.
@@ -36,13 +37,19 @@ public class CsvMultipartFormArgumentsReader implements ArgumentsReader {
 	 */
 	private final ThreadLocal<Closeable> threadLocal = new ThreadLocal<>();
 
+	private final CsvFactory csvFactory;
+
+	public CsvMultipartFormArgumentsReader() {
+		this.csvFactory = Classes.loadService(CsvFactory.class);
+	}
+
 	/**
 	 * Read CSV stream from HTTP request.
 	 * 
 	 * @param httpRequest HTTP request,
 	 * @param formalParameters requested formal parameters.
 	 */
-	@SuppressWarnings({ "rawtypes" })
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public Object[] read(HttpServletRequest httpRequest, Type[] formalParameters) throws IOException, IllegalArgumentException {
 		if (formalParameters.length != 1) {
@@ -59,7 +66,7 @@ public class CsvMultipartFormArgumentsReader implements ArgumentsReader {
 		CsvConfig config = Factory.getInstance(CsvConfig.class);
 
 		Object[] arguments = new Object[1];
-		arguments[0] = new CsvReader(config.getDescriptor(typeArgument), getUploadStream(httpRequest, formalParameters));
+		arguments[0] = csvFactory.getReader(config.getDescriptor(typeArgument), getUploadStream(httpRequest, formalParameters));
 		threadLocal.set((Closeable) (arguments[0]));
 		return arguments;
 	}

@@ -10,13 +10,21 @@ import js.lang.ConfigException;
 import js.lang.Configurable;
 import js.log.Log;
 import js.log.LogFactory;
+import js.util.Classes;
 import js.util.I18nFile;
 import js.util.I18nRepository;
 
 public class CsvConfigImpl implements CsvConfig, Configurable {
 	private static final Log log = LogFactory.getLog(CsvConfigImpl.class);
 
-	private Map<Class<?>, CsvDescriptor> descriptors = new HashMap<Class<?>, CsvDescriptor>();
+	private final Map<Class<?>, CsvDescriptor<?>> descriptors = new HashMap<>();
+
+	private final CsvFactory csvFactory;
+
+	public CsvConfigImpl() {
+		log.trace("CsvConfigImpl()");
+		csvFactory = Classes.loadService(CsvFactory.class);
+	}
 
 	@Override
 	public void config(Config config) throws Exception {
@@ -43,14 +51,15 @@ public class CsvConfigImpl implements CsvConfig, Configurable {
 				} catch (FileNotFoundException e) {
 					throw new ConfigException(e);
 				}
-				CsvDescriptor descriptor = new CsvDescriptor(builder.build());
-				descriptors.put(descriptor.getType(), descriptor);
+				CsvDescriptor<?> descriptor = csvFactory.getDescriptor(builder.build());
+				descriptors.put(descriptor.type(), descriptor);
 			}
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public CsvDescriptor getDescriptor(Class<?> type) {
-		return descriptors.get(type);
+	public <T> CsvDescriptor<T> getDescriptor(Class<T> type) {
+		return (CsvDescriptor<T>) descriptors.get(type);
 	}
 }

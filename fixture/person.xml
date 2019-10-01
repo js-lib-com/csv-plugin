@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<csv class="js.csv.CsvReaderTest$Person" separator="comma" null-value="null" debug="true">
-	<value name="Name" property="name" />
-	<value name="Age" property="age" />
+<csv class="js.csv.fixture.Person" header="true" delimiter="," null-value="null">
+	<column field="name" />
+	<column field="age" />
 </csv>

@@ -2,7 +2,6 @@ package js.csv;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.io.OutputStreamWriter;
 import java.util.Date;
 
 import js.http.ContentType;
@@ -12,21 +11,22 @@ import js.lang.ConfigException;
 import js.log.Log;
 import js.log.LogFactory;
 import js.mvc.AbstractView;
+import js.util.Classes;
 import js.util.Types;
 
 /**
- * View used for exporting list of objects in CSV format.
+ * View used to export list of objects in CSV format.
  * 
  * <pre>
  * &lt;?xml version="1.0" encoding="UTF-8"?&gt;
- * &lt;csv separator="tab" null-value="null"&gt;
- * 	&lt;value name="Employee" property="employee" /&gt;
- * 	&lt;value name="Begin Date" property="beginDate" format="js.format.ShortDate" /&gt;
- * 	&lt;value name="End Date" property="endDate" format="js.format.ShortDate" /&gt;
+ * &lt;csv class="com.company.SalesLead" delimiter="tab" null-value="null"&gt;
+ * 	&lt;column field="employee" /&gt;
+ * 	&lt;column field="beginDate" format="js.format.ShortDate" /&gt;
+ * 	&lt;column field="endDate" format="js.format.ShortDate" /&gt;
  * 	...
- * 	&lt;value name="Cession Percent" property="cessionPercent" format="ro.gnotis.comedien.format.Percent" /&gt;
- * 	&lt;value name="quantity" property="quantity" /&gt;
- * 	&lt;value name="Total Rate" property="totalRate" /&gt;
+ * 	&lt;column field="cessionPercent" format="ro.gnotis.comedien.format.Percent" /&gt;
+ * 	&lt;column field="quantity" /&gt;
+ * 	&lt;column field="totalRate" /&gt;
  * &lt;/csv&gt;
  * </pre>
  * 
@@ -44,11 +44,12 @@ public class CsvView extends AbstractView {
 	// view instances can be subject to pooling so take care to not reuse previous state
 	// be sure to initialize all this instance state on _serialize implementation
 
-	private CsvDescriptor descriptor;
+	private final CsvFactory csvFactory;
 
 	/** Create CSV view instance. */
 	public CsvView() {
 		log.trace("CsvView()");
+		csvFactory = Classes.loadService(CsvFactory.class);
 	}
 
 	@Override
@@ -56,6 +57,7 @@ public class CsvView extends AbstractView {
 		return CONTENT_TYPE;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	protected void serialize(OutputStream outputStream) throws IOException {
 		if (model == null) {
@@ -65,15 +67,17 @@ public class CsvView extends AbstractView {
 			throw new BugError("Model for CSV view |%s| is not array like.", meta.getName());
 		}
 		long timestamp = new Date().getTime();
-
-		ConfigBuilder builder = new ConfigBuilder(meta.getTemplateFile());
+		
+		CsvDescriptor<?> descriptor;
 		try {
-			descriptor = new CsvDescriptor(builder.build());
+			ConfigBuilder builder = new ConfigBuilder(meta.getTemplateFile());
+			descriptor = csvFactory.getDescriptor(builder.build());
 		} catch (ConfigException e) {
 			throw new IOException(e);
 		}
 
-		CsvWriter writer = new CsvWriter(descriptor, new OutputStreamWriter(outputStream));
+		@SuppressWarnings("rawtypes")
+		CsvWriter writer = csvFactory.getWriter(descriptor, outputStream);
 		for (Object object : Types.asIterable(model)) {
 			writer.write(object);
 		}

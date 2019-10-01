@@ -11,14 +11,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
+import org.junit.Before;
+import org.junit.Test;
+
+import js.csv.fixture.Person;
 import js.io.WriterOutputStream;
 import js.lang.BugError;
 import js.mvc.AbstractView;
 import js.mvc.ViewMeta;
 import js.util.Classes;
-
-import org.junit.Before;
-import org.junit.Test;
 
 public class CsvViewTest {
 	private CsvView view;
@@ -50,7 +51,7 @@ public class CsvViewTest {
 		stream.close();
 
 		System.out.println(response.toString());
-		assertEquals("Name,Age\r\nJohn Doe,54\r\n\"Grand Doe, \"\"Elder\"\"\",77\r\n", response.toString());
+		assertEquals("\"NAME\",\"AGE\"\r\n\"John Doe\",\"54\"\r\n\"Grand Doe, \"\"Elder\"\"\",\"77\"\r\n", response.toString());
 	}
 
 	@Test(expected = BugError.class)
@@ -63,24 +64,5 @@ public class CsvViewTest {
 	public void serialize_ModelNotArrayLike() throws IOException {
 		view.setModel(new Person());
 		view.serialize(new FileOutputStream("fixture/fake"));
-	}
-
-	// --------------------------------------------------------------------------------------------
-	// FIXTURE
-
-	@SuppressWarnings("unused")
-	private static class Person {
-		private final String name;
-		private final int age;
-
-		public Person() {
-			name = null;
-			age = 0;
-		}
-
-		public Person(String name, int age) {
-			this.name = name;
-			this.age = age;
-		}
 	}
 }

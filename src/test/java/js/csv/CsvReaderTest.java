@@ -1,21 +1,21 @@
 package js.csv;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import js.core.Factory;
-import js.unit.TestContext;
-import js.util.Strings;
-
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+
+import js.core.Factory;
+import js.csv.fixture.Person;
+import js.unit.TestContext;
+import js.util.Classes;
 
 public class CsvReaderTest {
 	private static final String DESCRIPTOR = "" + //
@@ -33,13 +33,11 @@ public class CsvReaderTest {
 		TestContext.start(DESCRIPTOR);
 	}
 
-	@Test
-	public void parseLine() throws IOException {
-		String line = Strings.load(new File("fixture/bad-line.csv"));
-		List<String> values = CsvReader.parseLine(line, ',');
+	private CsvFactory csvFactory;
 
-		assertNotNull(values);
-		assertEquals(36, values.size());
+	@Before
+	public void beforeTest() {
+		csvFactory = Classes.loadService(CsvFactory.class);
 	}
 
 	@Test
@@ -47,7 +45,7 @@ public class CsvReaderTest {
 		CsvConfig config = Factory.getInstance(CsvConfig.class);
 
 		InputStream stream = new FileInputStream("fixture/persons.csv");
-		CsvReader<Person> reader = new CsvReader<>(config.getDescriptor(Person.class), stream);
+		CsvReader<Person> reader = csvFactory.getReader(config.getDescriptor(Person.class), stream);
 
 		List<Person> persons = new ArrayList<>();
 		for (Person person : reader) {
@@ -56,25 +54,25 @@ public class CsvReaderTest {
 		reader.close();
 
 		assertEquals(6, persons.size());
-		assertEquals("John Doe", persons.get(0).name);
-		assertEquals(54, persons.get(0).age);
-		assertEquals("Jane Doe", persons.get(1).name);
-		assertEquals(50, persons.get(1).age);
-		assertEquals("", persons.get(2).name);
-		assertEquals(64, persons.get(2).age);
-		assertEquals("Baby Doe", persons.get(3).name);
-		assertEquals(0, persons.get(3).age);
-		assertEquals("John Doe, Sr.", persons.get(4).name);
-		assertEquals(77, persons.get(4).age);
-		assertEquals("Lion, \"The Little Cat\"", persons.get(5).name);
-		assertEquals(4, persons.get(5).age);
+		assertEquals("John Doe", persons.get(0).getName());
+		assertEquals(54, persons.get(0).getAge());
+		assertEquals("Jane Doe", persons.get(1).getName());
+		assertEquals(50, persons.get(1).getAge());
+		assertEquals("", persons.get(2).getName());
+		assertEquals(64, persons.get(2).getAge());
+		assertEquals("Baby Doe", persons.get(3).getName());
+		assertEquals(0, persons.get(3).getAge());
+		assertEquals("John Doe, Sr.", persons.get(4).getName());
+		assertEquals(77, persons.get(4).getAge());
+		assertEquals("Lion, \"The Little Cat\"", persons.get(5).getName());
+		assertEquals(4, persons.get(5).getAge());
 	}
 
 	@Test
 	public void escapeNewLine() throws IOException {
 		CsvConfig config = Factory.getInstance(CsvConfig.class);
 		InputStream stream = new FileInputStream("fixture/escape-new-line.csv");
-		CsvReader<Person> reader = new CsvReader<>(config.getDescriptor(Person.class), stream);
+		CsvReader<Person> reader = csvFactory.getReader(config.getDescriptor(Person.class), stream);
 
 		List<Person> persons = new ArrayList<>();
 		for (Person person : reader) {
@@ -83,14 +81,6 @@ public class CsvReaderTest {
 		reader.close();
 
 		assertEquals(1, persons.size());
-		assertEquals("Iulian\r\nRotaru", persons.get(0).name);
-	}
-
-	// --------------------------------------------------------------------------------------------
-	// FIXTURE
-
-	private static class Person {
-		private String name;
-		private int age;
+		assertEquals("Iulian\r\nRotaru", persons.get(0).getName());
 	}
 }

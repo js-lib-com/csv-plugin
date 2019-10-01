@@ -1,5 +1,5 @@
 package js.csv;
 
 public interface CsvConfig {
-	CsvDescriptor getDescriptor(Class<?> type);
+	<T> CsvDescriptor<T> getDescriptor(Class<T> type);
 }

@@ -6,82 +6,73 @@ import java.io.File;
 import java.io.IOException;
 import java.io.StringWriter;
 
-import js.lang.ConfigBuilder;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import js.csv.fixture.Person;
+import js.lang.ConfigBuilder;
+import js.util.Classes;
+
 public class CsvWriterTest {
-	private CsvWriter writer;
+	private CsvFactory csvFactory;
+	private CsvWriter<Person> writer;
 	private StringWriter output;
 
 	@Before
 	public void beforeTest() throws Exception {
+		csvFactory = Classes.loadService(CsvFactory.class);
+
 		ConfigBuilder builder = new ConfigBuilder(new File("fixture/person.xml"));
-		CsvDescriptor descriptor = new CsvDescriptor(builder.build());
+		CsvDescriptor<Person> descriptor = csvFactory.getDescriptor(builder.build());
 
 		output = new StringWriter();
-		writer = new CsvWriter(descriptor, output);
+		writer = csvFactory.getWriter(descriptor, output);
 	}
 
 	@After
 	public void afterTest() throws IOException {
 		writer.close();
 	}
-	
+
 	@Test
 	public void write_Standard() throws IOException {
 		writer.write(new Person("John Doe", 54));
-		assertEquals("Name,Age\r\nJohn Doe,54\r\n", output.toString());
+		assertEquals("\"NAME\",\"AGE\"\r\n\"John Doe\",\"54\"\r\n", output.toString());
 	}
-	
+
 	@Test
 	public void write_Escape() throws IOException {
 		writer.write(new Person("Grand Doe, \"Elder\"", 77));
-		assertEquals("Name,Age\r\n\"Grand Doe, \"\"Elder\"\"\",77\r\n", output.toString());
+		assertEquals("\"NAME\",\"AGE\"\r\n\"Grand Doe, \"\"Elder\"\"\",\"77\"\r\n", output.toString());
 	}
-	
+
 	@Test
 	public void write_EscapeCRLF() throws IOException {
 		writer.write(new Person("Baby Doe\r\nSon of John.", 54));
-		assertEquals("Name,Age\r\n\"Baby Doe\r\nSon of John.\",54\r\n", output.toString());
+		assertEquals("\"NAME\",\"AGE\"\r\n\"Baby Doe\r\nSon of John.\",\"54\"\r\n", output.toString());
 	}
-	
+
 	@Test
 	public void write_EscapeCommaAndCRLF() throws IOException {
 		writer.write(new Person("Baby Doe,\r\nSon of John.", 54));
-		assertEquals("Name,Age\r\n\"Baby Doe,\r\nSon of John.\",54\r\n", output.toString());
+		assertEquals("\"NAME\",\"AGE\"\r\n\"Baby Doe,\r\nSon of John.\",\"54\"\r\n", output.toString());
 	}
-	
+
 	@Test
 	public void write_EscapeQuoteAndCRLF() throws IOException {
 		writer.write(new Person("Baby Doe,\r\n\"Son of John\".", 54));
-		assertEquals("Name,Age\r\n\"Baby Doe,\r\n\"\"Son of John\"\".\",54\r\n", output.toString());
+		assertEquals("\"NAME\",\"AGE\"\r\n\"Baby Doe,\r\n\"\"Son of John\"\".\",\"54\"\r\n", output.toString());
 	}
-	
+
 	@Test
 	public void write_NullField() throws IOException {
 		writer.write(new Person(null, 54));
-		assertEquals("Name,Age\r\nnull,54\r\n", output.toString());
+		assertEquals("\"NAME\",\"AGE\"\r\n\"null\",\"54\"\r\n", output.toString());
 	}
 
-	@Test(expected=IllegalArgumentException.class)
+	@Test(expected = IllegalArgumentException.class)
 	public void write_NullObject() throws IOException {
 		writer.write(null);
-	}
-	
-	// --------------------------------------------------------------------------------------------
-	// FIXTURE
-
-	@SuppressWarnings("unused")
-	private static class Person {
-		private final String name;
-		private final int age;
-
-		public Person(String name, int age) {
-			this.name = name;
-			this.age = age;
-		}
 	}
 }
