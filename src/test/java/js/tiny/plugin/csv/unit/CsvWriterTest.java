@@ -1,4 +1,4 @@
-package js.csv;
+package js.tiny.plugin.csv.unit;
 
 import static org.junit.Assert.assertEquals;
 
@@ -10,8 +10,11 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import js.csv.fixture.Person;
+import js.csv.CsvDescriptor;
+import js.csv.CsvFactory;
+import js.csv.CsvWriter;
 import js.lang.ConfigBuilder;
+import js.tiny.plugin.csv.unit.fixture.Person;
 import js.util.Classes;
 
 public class CsvWriterTest {

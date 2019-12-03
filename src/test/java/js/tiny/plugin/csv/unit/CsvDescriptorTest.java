@@ -1,9 +1,9 @@
-package js.csv;
+package js.tiny.plugin.csv.unit;
 
 import org.junit.Before;
 import org.junit.Test;
 
-import js.converter.ConverterException;
+import js.csv.CsvFactory;
 import js.lang.Config;
 import js.lang.ConfigBuilder;
 import js.lang.ConfigException;
@@ -19,7 +19,7 @@ public class CsvDescriptorTest {
 
 	@Test
 	public void constructor() throws ConfigException {
-		ConfigBuilder builder = new ConfigBuilder("<csv class='js.csv.fixture.Person'><column field=\"name\" /></csv>");
+		ConfigBuilder builder = new ConfigBuilder("<csv class='js.tiny.plugin.csv.unit.fixture.Person'><column field=\"name\" /></csv>");
 		Config config = builder.build();
 		csvFactory.getDescriptor(config);
 	}
@@ -45,9 +45,9 @@ public class CsvDescriptorTest {
 		csvFactory.getDescriptor(config);
 	}
 
-	@Test(expected = ConverterException.class)
+	@Test(expected = ConfigException.class)
 	public void constructor_BadDelimiter() throws ConfigException {
-		ConfigBuilder builder = new ConfigBuilder("<csv class='js.csv.fixture.Person' delimiter='fake'></csv>");
+		ConfigBuilder builder = new ConfigBuilder("<csv class='js.tiny.plugin.csv.unit.fixture.Person' delimiter='fake'></csv>");
 		Config config = builder.build();
 		csvFactory.getDescriptor(config);
 	}

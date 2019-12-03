@@ -1,16 +1,19 @@
-package js.csv;
+package js.tiny.plugin.csv;
 
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Date;
 
-import js.http.ContentType;
+import js.csv.CsvDescriptor;
+import js.csv.CsvFactory;
+import js.csv.CsvWriter;
 import js.lang.BugError;
 import js.lang.ConfigBuilder;
 import js.lang.ConfigException;
 import js.log.Log;
 import js.log.LogFactory;
-import js.mvc.AbstractView;
+import js.tiny.container.http.ContentType;
+import js.tiny.container.mvc.AbstractView;
 import js.util.Classes;
 import js.util.Types;
 
@@ -53,13 +56,13 @@ public class CsvView extends AbstractView {
 	}
 
 	@Override
-	protected ContentType getContentType() {
+	public ContentType getContentType() {
 		return CONTENT_TYPE;
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	protected void serialize(OutputStream outputStream) throws IOException {
+	public void serialize(OutputStream outputStream) throws IOException {
 		if (model == null) {
 			throw new BugError("Missing model for CSV view |%s|.", meta.getName());
 		}

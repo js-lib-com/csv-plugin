@@ -4,4 +4,4 @@
  * @author Iulian Rotaru
  * @version draft
  */
-package js.csv;
+package js.tiny.plugin.csv;

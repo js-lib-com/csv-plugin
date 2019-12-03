@@ -1,9 +1,11 @@
-package js.csv;
+package js.tiny.plugin.csv;
 
 import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.Map;
 
+import js.csv.CsvDescriptor;
+import js.csv.CsvFactory;
 import js.lang.Config;
 import js.lang.ConfigBuilder;
 import js.lang.ConfigException;
@@ -14,14 +16,14 @@ import js.util.Classes;
 import js.util.I18nFile;
 import js.util.I18nRepository;
 
-public class CsvConfigImpl implements CsvConfig, Configurable {
-	private static final Log log = LogFactory.getLog(CsvConfigImpl.class);
+public class CsvConfig implements Configurable {
+	private static final Log log = LogFactory.getLog(CsvConfig.class);
 
 	private final Map<Class<?>, CsvDescriptor<?>> descriptors = new HashMap<>();
 
 	private final CsvFactory csvFactory;
 
-	public CsvConfigImpl() {
+	public CsvConfig() {
 		log.trace("CsvConfigImpl()");
 		csvFactory = Classes.loadService(CsvFactory.class);
 	}
@@ -58,7 +60,6 @@ public class CsvConfigImpl implements CsvConfig, Configurable {
 	}
 
 	@SuppressWarnings("unchecked")
-	@Override
 	public <T> CsvDescriptor<T> getDescriptor(Class<T> type) {
 		return (CsvDescriptor<T>) descriptors.get(type);
 	}

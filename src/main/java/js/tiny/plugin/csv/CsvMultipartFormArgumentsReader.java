@@ -1,4 +1,4 @@
-package js.csv;
+package js.tiny.plugin.csv;
 
 import java.io.Closeable;
 import java.io.IOException;
@@ -13,11 +13,12 @@ import org.apache.commons.fileupload.FileItemStream;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
-import js.core.Factory;
-import js.http.encoder.ArgumentsReader;
+import js.csv.CsvFactory;
 import js.lang.IllegalArgumentException;
 import js.log.Log;
 import js.log.LogFactory;
+import js.tiny.container.core.Factory;
+import js.tiny.container.http.encoder.ArgumentsReader;
 import js.util.Classes;
 import js.util.Files;
 

@@ -1,4 +1,4 @@
-package js.csv;
+package js.tiny.plugin.csv.unit;
 
 import static org.junit.Assert.assertEquals;
 
@@ -12,16 +12,19 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import js.core.Factory;
-import js.csv.fixture.Person;
-import js.unit.TestContext;
+import js.csv.CsvFactory;
+import js.csv.CsvReader;
+import js.tiny.container.core.Factory;
+import js.tiny.container.unit.TestContext;
+import js.tiny.plugin.csv.CsvConfig;
+import js.tiny.plugin.csv.unit.fixture.Person;
 import js.util.Classes;
 
 public class CsvReaderTest {
 	private static final String DESCRIPTOR = "" + //
 			"<test-config>" + //
 			"	<managed-classes>" + //
-			"		<csv interface='js.csv.CsvConfig' class='js.csv.CsvConfigImpl' />" + //
+			"		<csv class='js.tiny.plugin.csv.CsvConfig' />" + //
 			"	</managed-classes>" + //
 			"	<csv>" + //
 			"		<repository path='fixture' files-pattern='*.xml' />" + //
