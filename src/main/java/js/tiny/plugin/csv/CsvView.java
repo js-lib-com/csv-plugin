@@ -12,7 +12,6 @@ import js.lang.ConfigBuilder;
 import js.lang.ConfigException;
 import js.log.Log;
 import js.log.LogFactory;
-import js.tiny.container.http.ContentType;
 import js.tiny.container.mvc.AbstractView;
 import js.util.Classes;
 import js.util.Types;
@@ -41,7 +40,7 @@ public class CsvView extends AbstractView {
 	static final Log log = LogFactory.getLog(CsvView.class);
 
 	/** Content type for CSV documents, see https://www.iana.org/assignments/media-types/text/csv */
-	private static ContentType CONTENT_TYPE = new ContentType("text/csv;charset=UTF-8;header=present");
+	private static String CONTENT_TYPE = "text/csv;charset=UTF-8;header=present";
 
 	// implementation note:
 	// view instances can be subject to pooling so take care to not reuse previous state
@@ -56,7 +55,7 @@ public class CsvView extends AbstractView {
 	}
 
 	@Override
-	public ContentType getContentType() {
+	public String getContentType() {
 		return CONTENT_TYPE;
 	}
 

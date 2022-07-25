@@ -3,7 +3,6 @@ package js.tiny.plugin.csv.unit;
 import static org.junit.Assert.assertEquals;
 
 import java.io.FileInputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,26 +13,24 @@ import org.junit.Test;
 
 import js.csv.CsvFactory;
 import js.csv.CsvReader;
-import js.tiny.container.core.Factory;
-import js.tiny.container.unit.TestContext;
+import js.lang.Config;
+import js.lang.ConfigBuilder;
 import js.tiny.plugin.csv.CsvConfig;
 import js.tiny.plugin.csv.unit.fixture.Person;
 import js.util.Classes;
 
 public class CsvReaderTest {
 	private static final String DESCRIPTOR = "" + //
-			"<test-config>" + //
-			"	<managed-classes>" + //
-			"		<csv class='js.tiny.plugin.csv.CsvConfig' />" + //
-			"	</managed-classes>" + //
-			"	<csv>" + //
-			"		<repository path='fixture' files-pattern='*.xml' />" + //
-			"	</csv>" + //
-			"</test-config>";
+			"<csv>" + //
+			"	<repository path='fixture' files-pattern='*.xml' />" + //
+			"</csv>";
 
+	private static Config config;
+	
 	@BeforeClass
 	public static void beforeClass() throws Exception {
-		TestContext.start(DESCRIPTOR);
+		ConfigBuilder builder = new ConfigBuilder(DESCRIPTOR);
+		config = builder.build();
 	}
 
 	private CsvFactory csvFactory;
@@ -44,11 +41,12 @@ public class CsvReaderTest {
 	}
 
 	@Test
-	public void importPersons() throws IOException {
-		CsvConfig config = Factory.getInstance(CsvConfig.class);
+	public void importPersons() throws Exception {
+		CsvConfig csvConfig = new CsvConfig();
+		csvConfig.config(config);
 
 		InputStream stream = new FileInputStream("fixture/persons.csv");
-		CsvReader<Person> reader = csvFactory.getReader(config.getDescriptor(Person.class), stream);
+		CsvReader<Person> reader = csvFactory.getReader(csvConfig.getDescriptor(Person.class), stream);
 
 		List<Person> persons = new ArrayList<>();
 		for (Person person : reader) {
@@ -72,10 +70,12 @@ public class CsvReaderTest {
 	}
 
 	@Test
-	public void escapeNewLine() throws IOException {
-		CsvConfig config = Factory.getInstance(CsvConfig.class);
+	public void escapeNewLine() throws Exception {
+		CsvConfig csvConfig = new CsvConfig();
+		csvConfig.config(config);
+		
 		InputStream stream = new FileInputStream("fixture/escape-new-line.csv");
-		CsvReader<Person> reader = csvFactory.getReader(config.getDescriptor(Person.class), stream);
+		CsvReader<Person> reader = csvFactory.getReader(csvConfig.getDescriptor(Person.class), stream);
 
 		List<Person> persons = new ArrayList<>();
 		for (Person person : reader) {

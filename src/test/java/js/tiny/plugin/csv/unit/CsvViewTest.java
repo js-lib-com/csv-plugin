@@ -36,7 +36,7 @@ public class CsvViewTest {
 
 	@Test
 	public void getContentType() {
-		assertEquals("text/csv;charset=UTF-8;header=present", view.getContentType().getValue());
+		assertEquals("text/csv;charset=UTF-8;header=present", view.getContentType());
 	}
 
 	@Test
