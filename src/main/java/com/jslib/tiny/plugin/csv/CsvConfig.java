@@ -1,20 +1,20 @@
-package js.tiny.plugin.csv;
+package com.jslib.tiny.plugin.csv;
 
 import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.Map;
 
-import js.csv.CsvDescriptor;
-import js.csv.CsvFactory;
-import js.lang.Config;
-import js.lang.ConfigBuilder;
-import js.lang.ConfigException;
-import js.lang.Configurable;
+import com.jslib.api.csv.CsvDescriptor;
+import com.jslib.api.csv.CsvFactory;
 import com.jslib.api.log.Log;
 import com.jslib.api.log.LogFactory;
-import js.util.Classes;
-import js.util.I18nFile;
-import js.util.I18nRepository;
+import com.jslib.lang.Config;
+import com.jslib.lang.ConfigBuilder;
+import com.jslib.lang.ConfigException;
+import com.jslib.lang.Configurable;
+import com.jslib.util.Classes;
+import com.jslib.util.I18nFile;
+import com.jslib.util.I18nRepository;
 
 public class CsvConfig implements Configurable {
 	private static final Log log = LogFactory.getLog(CsvConfig.class);
@@ -50,7 +50,7 @@ public class CsvConfig implements Configurable {
 			for (I18nFile template : repository) {
 				try {
 					builder = new ConfigBuilder(template.getFile());
-				} catch (FileNotFoundException e) {
+				} catch (FileNotFoundException e) {	
 					throw new ConfigException(e);
 				}
 				CsvDescriptor<?> descriptor = csvFactory.getDescriptor(builder.build());

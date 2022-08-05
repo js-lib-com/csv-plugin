@@ -1,4 +1,4 @@
-package js.tiny.plugin.csv.unit;
+package com.jslib.tiny.plugin.csv.unit;
 
 import static org.junit.Assert.assertEquals;
 
@@ -14,13 +14,13 @@ import java.util.Properties;
 import org.junit.Before;
 import org.junit.Test;
 
-import js.io.WriterOutputStream;
-import js.lang.BugError;
-import js.tiny.container.mvc.AbstractView;
-import js.tiny.container.mvc.ViewMeta;
-import js.tiny.plugin.csv.CsvView;
-import js.tiny.plugin.csv.unit.fixture.Person;
-import js.util.Classes;
+import com.jslib.io.WriterOutputStream;
+import com.jslib.lang.BugError;
+import com.jslib.tiny.container.mvc.AbstractView;
+import com.jslib.tiny.container.mvc.ViewMeta;
+import com.jslib.tiny.plugin.csv.CsvView;
+import com.jslib.tiny.plugin.csv.unit.fixture.Person;
+import com.jslib.util.Classes;
 
 public class CsvViewTest {
 	private CsvView view;

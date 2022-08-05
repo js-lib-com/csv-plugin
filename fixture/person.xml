@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<csv class="js.tiny.plugin.csv.unit.fixture.Person" header="true" delimiter="," null-value="null">
+<csv class="com.jslib.tiny.plugin.csv.unit.fixture.Person" header="true" delimiter="," null-value="null">
 	<column field="name" />
 	<column field="age" />
 </csv>

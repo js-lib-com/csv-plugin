@@ -1,13 +1,13 @@
-package js.tiny.plugin.csv.unit;
+package com.jslib.tiny.plugin.csv.unit;
 
 import org.junit.Before;
 import org.junit.Test;
 
-import js.csv.CsvFactory;
-import js.lang.Config;
-import js.lang.ConfigBuilder;
-import js.lang.ConfigException;
-import js.util.Classes;
+import com.jslib.api.csv.CsvFactory;
+import com.jslib.lang.Config;
+import com.jslib.lang.ConfigBuilder;
+import com.jslib.lang.ConfigException;
+import com.jslib.util.Classes;
 
 public class CsvDescriptorTest {
 	private CsvFactory csvFactory;
@@ -19,7 +19,7 @@ public class CsvDescriptorTest {
 
 	@Test
 	public void constructor() throws ConfigException {
-		ConfigBuilder builder = new ConfigBuilder("<csv class='js.tiny.plugin.csv.unit.fixture.Person'><column field=\"name\" /></csv>");
+		ConfigBuilder builder = new ConfigBuilder("<csv class='com.jslib.tiny.plugin.csv.unit.fixture.Person'><column field=\"name\" /></csv>");
 		Config config = builder.build();
 		csvFactory.getDescriptor(config);
 	}

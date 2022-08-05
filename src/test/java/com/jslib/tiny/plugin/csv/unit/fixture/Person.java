@@ -1,4 +1,4 @@
-package js.tiny.plugin.csv.unit.fixture;
+package com.jslib.tiny.plugin.csv.unit.fixture;
 
 public class Person {
 	private final String name;

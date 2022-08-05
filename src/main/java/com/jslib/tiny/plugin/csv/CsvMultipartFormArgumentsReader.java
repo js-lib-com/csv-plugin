@@ -1,4 +1,4 @@
-package js.tiny.plugin.csv;
+package com.jslib.tiny.plugin.csv;
 
 import java.io.Closeable;
 import java.io.IOException;
@@ -11,15 +11,16 @@ import org.apache.commons.fileupload.FileItemStream;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
-import jakarta.servlet.http.HttpServletRequest;
-import js.csv.CsvFactory;
-import js.lang.IllegalArgumentException;
+import com.jslib.api.csv.CsvFactory;
 import com.jslib.api.log.Log;
 import com.jslib.api.log.LogFactory;
-import js.tiny.container.http.encoder.ArgumentsReader;
-import js.tiny.container.spi.Factory;
-import js.util.Classes;
-import js.util.Files;
+import com.jslib.lang.IllegalArgumentException;
+import com.jslib.tiny.container.http.encoder.ArgumentsReader;
+import com.jslib.tiny.container.spi.Factory;
+import com.jslib.util.Classes;
+import com.jslib.util.Files;
+
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * CSV reader argument transported as <code>multipart/form-data</code>.

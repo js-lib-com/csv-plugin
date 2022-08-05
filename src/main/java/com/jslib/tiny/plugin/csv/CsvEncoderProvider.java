@@ -1,15 +1,15 @@
-package js.tiny.plugin.csv;
+package com.jslib.tiny.plugin.csv;
 
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-import js.csv.CsvReader;
-import js.tiny.container.http.ContentType;
-import js.tiny.container.http.encoder.ArgumentsReader;
-import js.tiny.container.http.encoder.EncoderKey;
-import js.tiny.container.http.encoder.HttpEncoderProvider;
-import js.tiny.container.http.encoder.ValueWriter;
+import com.jslib.api.csv.CsvReader;
+import com.jslib.tiny.container.http.ContentType;
+import com.jslib.tiny.container.http.encoder.ArgumentsReader;
+import com.jslib.tiny.container.http.encoder.EncoderKey;
+import com.jslib.tiny.container.http.encoder.HttpEncoderProvider;
+import com.jslib.tiny.container.http.encoder.ValueWriter;
 
 /**
  * Server HTTP encoder provider for CSV types. Current implementation provides only arguments reader for {@link CsvReader}

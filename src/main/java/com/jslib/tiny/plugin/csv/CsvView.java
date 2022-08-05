@@ -1,20 +1,20 @@
-package js.tiny.plugin.csv;
+package com.jslib.tiny.plugin.csv;
 
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Date;
 
-import js.csv.CsvDescriptor;
-import js.csv.CsvFactory;
-import js.csv.CsvWriter;
-import js.lang.BugError;
-import js.lang.ConfigBuilder;
-import js.lang.ConfigException;
+import com.jslib.api.csv.CsvDescriptor;
+import com.jslib.api.csv.CsvFactory;
+import com.jslib.api.csv.CsvWriter;
 import com.jslib.api.log.Log;
 import com.jslib.api.log.LogFactory;
-import js.tiny.container.mvc.AbstractView;
-import js.util.Classes;
-import js.util.Types;
+import com.jslib.lang.BugError;
+import com.jslib.lang.ConfigBuilder;
+import com.jslib.lang.ConfigException;
+import com.jslib.tiny.container.mvc.AbstractView;
+import com.jslib.util.Classes;
+import com.jslib.util.Types;
 
 /**
  * View used to export list of objects in CSV format.
@@ -23,8 +23,8 @@ import js.util.Types;
  * &lt;?xml version="1.0" encoding="UTF-8"?&gt;
  * &lt;csv class="com.company.SalesLead" delimiter="tab" null-value="null"&gt;
  * 	&lt;column field="employee" /&gt;
- * 	&lt;column field="beginDate" format="js.format.ShortDate" /&gt;
- * 	&lt;column field="endDate" format="js.format.ShortDate" /&gt;
+ * 	&lt;column field="beginDate" format="com.jslib.format.ShortDate" /&gt;
+ * 	&lt;column field="endDate" format="com.jslib.format.ShortDate" /&gt;
  * 	...
  * 	&lt;column field="cessionPercent" format="ro.gnotis.comedien.format.Percent" /&gt;
  * 	&lt;column field="quantity" /&gt;
