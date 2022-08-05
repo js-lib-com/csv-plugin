@@ -14,10 +14,10 @@ import java.util.Properties;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.jslib.container.mvc.AbstractView;
+import com.jslib.container.mvc.ViewMeta;
 import com.jslib.io.WriterOutputStream;
 import com.jslib.lang.BugError;
-import com.jslib.tiny.container.mvc.AbstractView;
-import com.jslib.tiny.container.mvc.ViewMeta;
 import com.jslib.tiny.plugin.csv.CsvView;
 import com.jslib.tiny.plugin.csv.unit.fixture.Person;
 import com.jslib.util.Classes;
