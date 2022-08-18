@@ -54,7 +54,7 @@ public class CsvMultipartFormArgumentsReader implements ArgumentsReader {
 	@Override
 	public Object[] read(HttpServletRequest httpRequest, Type[] formalParameters) throws IOException, IllegalArgumentException {
 		if (formalParameters.length != 1) {
-			log.error("Bad parameters count for multipart form. Method must have exactly one formal parameter but has |%d|.", formalParameters.length);
+			log.error("Bad parameters count for multipart form. Method must have exactly one formal parameter but has |{parameters_length}|.", formalParameters.length);
 			throw new IllegalArgumentException(formalParameters);
 		}
 		if (!(formalParameters[0] instanceof ParameterizedType)) {

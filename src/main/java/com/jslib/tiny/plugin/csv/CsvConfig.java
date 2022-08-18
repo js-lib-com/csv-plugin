@@ -11,12 +11,11 @@ import com.jslib.api.log.LogFactory;
 import com.jslib.lang.Config;
 import com.jslib.lang.ConfigBuilder;
 import com.jslib.lang.ConfigException;
-import com.jslib.lang.Configurable;
 import com.jslib.util.Classes;
 import com.jslib.util.I18nFile;
 import com.jslib.util.I18nRepository;
 
-public class CsvConfig implements Configurable {
+public class CsvConfig {
 	private static final Log log = LogFactory.getLog(CsvConfig.class);
 
 	private final Map<Class<?>, CsvDescriptor<?>> descriptors = new HashMap<>();
@@ -28,7 +27,6 @@ public class CsvConfig implements Configurable {
 		csvFactory = Classes.loadService(CsvFactory.class);
 	}
 
-	@Override
 	public void config(Config config) throws Exception {
 		log.trace("config(Config)");
 		for (Config repositorySection : config.findChildren("repository")) {

@@ -85,6 +85,6 @@ public class CsvView extends AbstractView {
 		}
 		writer.close();
 
-		log.debug("CSV processing last %d msec.", new Date().getTime() - timestamp);
+		log.info("CSV processing last {processing_time} msec.", new Date().getTime() - timestamp);
 	}
 }
